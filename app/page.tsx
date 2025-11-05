@@ -1,9 +1,17 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import emailjs from "emailjs-com"
 
 export default function Home() {
   const [scrollOpacity, setScrollOpacity] = useState(1)
+  const [isOpen, setIsOpen] = useState(false)
+  const [formData, setFormData] = useState({
+    user_name: "",
+    user_number: "",
+    user_email: "",
+  })
+  const [status, setStatus] = useState("")
 
   useEffect(() => {
     const handleScroll = () => {
@@ -17,16 +25,40 @@ export default function Home() {
     return () => window.removeEventListener("scroll", handleScroll)
   }, [])
 
-  return (
-    <main className="bg-background">
+  const handleChange = (e) => {
+    setFormData({ ...formData, [e.target.name]: e.target.value })
+  }
+
+  const handleSubmit = (e) => {
+    e.preventDefault()
+    setStatus("Sending...")
+
+    emailjs
+      .send(
+        "service_366srlb", // replace with your EmailJS Service ID
+        "template_mz0qx5l", // replace with your EmailJS Template ID
+        formData,
+        "bybwHcsEJugC6T3gR" // replace with your EmailJS Public Key
+      )
+      .then(() => {
+        setStatus("Thank you! You’ll be notified soon 🎉")
+        setFormData({ user_name: "", user_number: "", user_email: "" })
+      })
+      .catch((err) => {
+        console.error(err)
+        setStatus("Something went wrong. Please try again.")
+      })
+  }
+
+return (
+<main className="bg-background">
       {/* Full Screen Hero */}
       <section className="relative w-full h-screen flex items-center justify-center overflow-hidden">
         {/* Background Image */}
         <div
           className="absolute inset-0"
           style={{
-            backgroundImage:
-              `url("/sooziva.jpg")`,
+            backgroundImage: `url("/sooziva.jpg")`,
             backgroundSize: "cover",
             backgroundPosition: "center 30%",
           }}
@@ -52,12 +84,20 @@ export default function Home() {
 
           {/* CTA Buttons */}
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
-            <button className="px-8 py-3 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-all">
+            <button
+              onClick={() => setIsOpen(true)}
+              className="px-8 py-3 bg-white text-black rounded-full font-medium hover:bg-white/90 transition-all"
+            >
               Notify Me
             </button>
-            <button className="px-8 py-3 border border-white text-white rounded-full font-medium hover:bg-white/10 transition-all">
-              Learn More
-            </button>
+            <a
+  href="https://buukmenow.com/b/ziva-by-ekay-1310" // 🔹 Replace with your real link
+  target="_blank"                // opens in a new tab
+  rel="noopener noreferrer"      // security best practice
+  className="px-8 py-3 border border-white text-white rounded-full font-medium hover:bg-white/10 transition-all inline-block"
+>
+  Learn More
+</a>
           </div>
         </div>
 
@@ -73,6 +113,58 @@ export default function Home() {
         </div>
       </section>
 
+      {/* Modal */}
+      {isOpen && (
+        <div className="fixed inset-0 bg-black/70 flex items-center justify-center z-50">
+          <div className="bg-white text-gray-900 rounded-2xl p-8 w-80 relative shadow-lg">
+            <button
+              onClick={() => setIsOpen(false)}
+              className="absolute top-2 right-3 text-gray-500 text-xl"
+            >
+              &times;
+            </button>
+            <h2 className="text-2xl font-semibold mb-4 text-center">Get Notified!</h2>
+
+            <form onSubmit={handleSubmit} className="flex flex-col gap-3">
+              <input
+                type="text"
+                name="user_name"
+                placeholder="Your Name"
+                value={formData.user_name}
+                onChange={handleChange}
+                className="border rounded-md p-2"
+                required
+              />
+              <input
+                type="tel"
+                name="user_number"
+                placeholder="Phone Number"
+                value={formData.user_number}
+                onChange={handleChange}
+                className="border rounded-md p-2"
+                required
+              />
+              <input
+                type="email"
+                name="user_email"
+                placeholder="Email Address"
+                value={formData.user_email}
+                onChange={handleChange}
+                className="border rounded-md p-2"
+                required
+              />
+              <button
+                type="submit"
+                className="bg-blue-600 text-white py-2 rounded-md hover:bg-blue-700 transition"
+              >
+                Submit
+              </button>
+            </form>
+            <p className="text-center text-sm mt-3">{status}</p>
+          </div>
+        </div>
+      )}
+  
       {/* About Section */}
       {/* <section className="py-20 sm:py-32 px-4 sm:px-6 lg:px-8 max-w-6xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-12 items-center">
