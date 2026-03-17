@@ -49,12 +49,6 @@ export default function RegistrationPage() {
           <p className="text-sm sm:text-base text-gray-600 mb-6">
             Your details have been submitted successfully. We’ll be in touch soon.
           </p>
-          <a
-            href="/"
-            className="inline-flex items-center justify-center px-6 py-2.5 rounded-full bg-black text-white text-sm font-medium hover:bg-black/90 transition-colors"
-          >
-            Back to Home
-          </a>
         </div>
       </main>
     )
@@ -63,11 +57,16 @@ export default function RegistrationPage() {
   return (
     <main className="min-h-screen bg-background flex items-center justify-center px-4 py-10">
       <div className="w-full max-w-2xl bg-white/90 backdrop-blur-md rounded-2xl shadow-lg border border-black/5 p-6 sm:p-10">
+        <div className="mb-4 text-center">
+          <div className="inline-flex items-center justify-center rounded-full border border-gray-300 px-4 py-1.5 text-xs tracking-[0.25em] uppercase text-gray-700">
+            E.M.A · Expert Makeup Academy
+          </div>
+        </div>
         <h1 className="text-3xl sm:text-4xl font-light font-serif mb-2 text-center text-gray-900">
           Registration
         </h1>
         <p className="text-sm sm:text-base text-gray-600 mb-8 text-center">
-          Fill in your details below so we can personalise your experience with Soo Ziva.
+          Fill in your details below so we can personalise your experience for E.M.A.
         </p>
 
         <form onSubmit={handleSubmit} className="space-y-6">
